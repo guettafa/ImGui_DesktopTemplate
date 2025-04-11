@@ -30,7 +30,7 @@ VOID Window::CreateWnd()
 	SetLayeredWindowAttributes(hWnd, 0, 0, ULW_COLORKEY);
 	
 	if (!RegisterClassEx(&wndClass))
-		std::printf("[-] Can't register WndClass - EC : %d", GetLastError);
+		std::printf("[-] Can't register WndClass %d", GetLastError());
 }
 
 VOID Window::InitDevice()
@@ -38,7 +38,7 @@ VOID Window::InitDevice()
 	pD3d9 = Direct3DCreate9(D3D_SDK_VERSION);
 
 	if (!pD3d9) {
-		std::printf("[-] Can't create the directx device\n");
+		std::printf("[-] Can't create the directx device %d \n", GetLastError());
 		std::terminate();
 	}
 
@@ -73,7 +73,7 @@ VOID Window::InitDevice()
 		);
 
 		if (FAILED(hr)) {
-			std::printf("[-] Failed to create DirectX device\n");
+			std::printf("[-] Failed to create DirectX device %d \n", GetLastError());
 			std::terminate();
 		}
 	}
@@ -88,12 +88,12 @@ VOID Window::InitImGui()
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
 
 	if (!ImGui_ImplWin32_Init(hWnd)) {
-		std::printf("[-] Can't initialize the ImGui Win32 API \n");
+		std::printf("[-] Can't initialize ImGui Win32 API %d \n", GetLastError());
 		std::terminate();
 	}
 
 	if (!ImGui_ImplDX9_Init(pD3d9Device)) {
-		std::printf("[-] Can't initialize the ImGui Dx9 API \n");
+		std::printf("[-] Can't initialize ImGui Dx9 API %d \n", GetLastError());
 		std::terminate();
 	}
 
