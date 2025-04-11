@@ -6,8 +6,6 @@
 
 namespace Gui
 {
-	extern UINT width;
-	extern UINT height;
 	extern Window wnd;
 
 	void Menu();
