@@ -1,8 +1,13 @@
 #include <iostream>
 #include "window.h"
 
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
+	if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wparam, lparam))
+		return true;
+
 	switch (msg)
 	{
 	case WM_CREATE:
@@ -11,33 +16,30 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 	case WM_QUIT:
 		// clean & close
 		return 0;
-	default:
-		return DefWindowProc(hWnd, msg, wparam, lparam);
 	}
-	return 0;
+	return ::DefWindowProc(hWnd, msg, wparam, lparam);
 }
 
 VOID Window::CreateWnd()
 {
 	WNDCLASSEX wndClass{};
 	wndClass.cbSize			= sizeof(wndClass);
-	wndClass.style			= CS_CLASSDC;
+	wndClass.style			= CS_HREDRAW | CS_VREDRAW;
 	wndClass.lpfnWndProc	= WndProc;
 	wndClass.cbClsExtra		= 0;
 	wndClass.cbWndExtra		= 0;
 	wndClass.hInstance		= GetModuleHandle(nullptr);
-	wndClass.hIcon			= nullptr;
-	wndClass.hCursor		= nullptr;
+	wndClass.hIcon			= LoadIcon(NULL, IDI_APPLICATION);
+	wndClass.hCursor		= LoadCursor(NULL, IDC_ARROW);
 	wndClass.hbrBackground  = nullptr;
 	wndClass.lpszMenuName	= nullptr;
 	wndClass.lpszClassName	= L"MyWindow";
-	wndClass.hIconSm		= nullptr;
+	wndClass.hIconSm		= LoadIcon(NULL, IDI_APPLICATION);
 
 	if (!RegisterClassEx(&wndClass))
 		std::printf("[-] Can't register WndClass %d", GetLastError());
 
-	DWORD windowStyles = WS_EX_LAYERED | WS_EX_TOPMOST | WS_EX_NOACTIVATE;
-	hWnd = CreateWindowEx(windowStyles, L"MyWindow", nullptr, WS_POPUP, 0, 0, m_width, m_height, NULL, NULL, wndClass.hInstance, nullptr);
+	hWnd = CreateWindowEx(WS_EX_LAYERED, wndClass.lpszClassName, nullptr, WS_POPUP, 0, 0, m_width, m_height, NULL, NULL, wndClass.hInstance, nullptr);
 	
 	if (!hWnd)
 	{
@@ -45,7 +47,10 @@ VOID Window::CreateWnd()
 		std::terminate();
 	}
 
-	SetLayeredWindowAttributes(hWnd, 0, 0, ULW_COLORKEY);
+	::SetLayeredWindowAttributes(hWnd, 0, 0, ULW_COLORKEY);
+
+	::ShowWindow(hWnd, SW_SHOWDEFAULT);
+	::UpdateWindow(hWnd);
 }
 
 VOID Window::InitDevice()
@@ -77,22 +82,10 @@ VOID Window::InitDevice()
 		&pD3d9Device
 	);
 
-	// Double check
 	if (FAILED(hr)) 
 	{
-		hr = pD3d9->CreateDevice(
-			D3DADAPTER_DEFAULT,
-			D3DDEVTYPE_HAL,
-			hWnd,
-			D3DCREATE_SOFTWARE_VERTEXPROCESSING,
-			&m_d3dParameters,
-			&pD3d9Device
-		);
-
-		if (FAILED(hr)) {
-			std::printf("[-] Failed to create DirectX device %d \n", GetLastError());
-			std::terminate();
-		}
+		std::printf("[-] Failed to create DirectX device %d \n", GetLastError());
+		std::terminate();
 	}
 }
 
@@ -100,6 +93,9 @@ VOID Window::InitImGui()
 {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
+
+	ImGui::StyleColorsDark();
+
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
@@ -114,7 +110,6 @@ VOID Window::InitImGui()
 		std::printf("[-] Can't initialize ImGui DirectX9 API %d \n", GetLastError());
 		std::terminate();
 	}
-	ImGui::StyleColorsDark();
 }
 
 /// <summary>

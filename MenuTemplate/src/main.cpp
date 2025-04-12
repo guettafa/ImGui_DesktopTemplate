@@ -1,7 +1,12 @@
 #include <iostream>
 #include "gui.h"
 
+#ifdef _DEBUG
 int main(int argc, char** argv)
+#else 
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+	PSTR lpCmdLine, int nCmdShow)
+#endif
 {
 	Gui::wnd = Window(1920, 1080);
 
