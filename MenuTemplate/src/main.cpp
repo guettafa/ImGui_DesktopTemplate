@@ -3,8 +3,8 @@
 
 #ifdef _DEBUG
 int main(int argc, char** argv)
-#else 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+#else // Windows Subsystem
+int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	PSTR lpCmdLine, int nCmdShow)
 #endif
 {
@@ -16,6 +16,5 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			Gui::Menu();
 		}
 	);
-	
 	return 0;
 }

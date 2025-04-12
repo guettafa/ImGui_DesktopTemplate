@@ -55,7 +55,6 @@ void Gui::Loop(const std::function<void() >& func)
 		wnd.pD3d9Device->SetRenderState(D3DRS_ALPHABLENDENABLE,  FALSE);
 		wnd.pD3d9Device->SetRenderState(D3DRS_SCISSORTESTENABLE, FALSE);
 
-
 		D3DCOLOR clearColorD3d9 = D3DCOLOR_RGBA(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
 		wnd.pD3d9Device->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, clearColorD3d9, 1.0f, 0);
 
