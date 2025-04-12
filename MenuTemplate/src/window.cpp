@@ -24,22 +24,22 @@ VOID Window::CreateWnd()
 {
 	WNDCLASSEX wndClass{};
 	wndClass.cbSize			= sizeof(wndClass);
-	wndClass.style			= CS_HREDRAW | CS_VREDRAW;
+	wndClass.style			= CS_CLASSDC;
 	wndClass.lpfnWndProc	= WndProc;
-	wndClass.cbClsExtra		= 0;
-	wndClass.cbWndExtra		= 0;
+	wndClass.cbClsExtra		= 0L;
+	wndClass.cbWndExtra		= 0L;
 	wndClass.hInstance		= GetModuleHandle(nullptr);
-	wndClass.hIcon			= LoadIcon(NULL, IDI_APPLICATION);
-	wndClass.hCursor		= LoadCursor(NULL, IDC_ARROW);
+	wndClass.hIcon			= nullptr;
+	wndClass.hCursor		= nullptr;
 	wndClass.hbrBackground  = nullptr;
 	wndClass.lpszMenuName	= nullptr;
 	wndClass.lpszClassName	= L"MyWindow";
-	wndClass.hIconSm		= LoadIcon(NULL, IDI_APPLICATION);
+	wndClass.hIconSm		= nullptr;
 
-	if (!RegisterClassEx(&wndClass))
+	if (!::RegisterClassEx(&wndClass))
 		std::printf("[-] Can't register WndClass %d", GetLastError());
 
-	hWnd = CreateWindowEx(WS_EX_LAYERED, wndClass.lpszClassName, nullptr, WS_POPUP, 0, 0, m_width, m_height, NULL, NULL, wndClass.hInstance, nullptr);
+	hWnd = ::CreateWindowW(wndClass.lpszClassName, nullptr, WS_OVERLAPPEDWINDOW, 0, 0, m_width, m_height, NULL, NULL, wndClass.hInstance, nullptr);
 	
 	if (!hWnd)
 	{
@@ -66,7 +66,7 @@ VOID Window::InitDevice()
 	ZeroMemory(&m_d3dParameters, sizeof(m_d3dParameters));
 	m_d3dParameters.Windowed				= TRUE;
 	m_d3dParameters.SwapEffect				= D3DSWAPEFFECT_DISCARD;
-	m_d3dParameters.BackBufferFormat		= D3DFMT_A8R8G8B8;  // Format 
+	m_d3dParameters.BackBufferFormat		= D3DFMT_UNKNOWN;
 	m_d3dParameters.EnableAutoDepthStencil	= TRUE;
 	m_d3dParameters.AutoDepthStencilFormat	= D3DFMT_D16;
 	m_d3dParameters.PresentationInterval	= D3DPRESENT_INTERVAL_ONE;

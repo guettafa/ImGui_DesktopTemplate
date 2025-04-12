@@ -7,12 +7,6 @@ namespace Gui
 
 void Gui::Menu()
 {
-	ImGui::Begin("Hello", nullptr);
-	{
-		ImGui::Text("Hello ImGui !");
-	}
-	ImGui::End();
-
 	ImGui::Begin("Salut", nullptr);
 	{
 		ImGui::Text("%f",ImGui::GetIO().Framerate);
@@ -23,10 +17,10 @@ void Gui::Menu()
 
 void Gui::Loop(const std::function<void() >& func) 
 {
-	int clearColor[4] = {0, 0, 0, 0};
-	bool isDone = false;
-
 	MSG msg{};
+	bool isDone = false;
+	int clearColor[4] = {0, 0, 0, 0};
+
 	while (!isDone)
 	{
 		// Polls event
@@ -55,10 +49,11 @@ void Gui::Loop(const std::function<void() >& func)
 		wnd.pD3d9Device->SetRenderState(D3DRS_ALPHABLENDENABLE,  FALSE);
 		wnd.pD3d9Device->SetRenderState(D3DRS_SCISSORTESTENABLE, FALSE);
 
-		D3DCOLOR clearColorD3d9 = D3DCOLOR_RGBA(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
-		wnd.pD3d9Device->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, clearColorD3d9, 1.0f, 0);
+		D3DCOLOR clearColorD3d9 = D3DCOLOR_RGBA(0, 0, 0, 255);
+		wnd.pD3d9Device->Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, clearColorD3d9, 1.0f, 0);
 
-		if (wnd.pD3d9Device->BeginScene() >= 0) {
+		if (wnd.pD3d9Device->BeginScene() >= 0) 
+		{
 			ImGui::Render();
 			ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
 			wnd.pD3d9Device->EndScene();
