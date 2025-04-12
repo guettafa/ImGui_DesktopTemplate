@@ -36,6 +36,15 @@ void Gui::Loop(const std::function<void() >& func)
 				break;
 		}
 
+		// Resize Window
+		if (g_width != 0 && g_height != 0)
+		{
+			wnd.d3dParameters.BackBufferWidth = g_width;
+			wnd.d3dParameters.BackBufferHeight = g_height;
+			g_width = g_height = 0;
+			wnd.ResetDevice();
+		}
+
 		ImGui_ImplDX9_NewFrame();
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
