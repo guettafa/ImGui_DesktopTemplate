@@ -12,7 +12,7 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	Gui::Loop(
 		[&]()
 		{
-			Gui::Menu();
+			Gui::Display();
 		}
 	);
 	return 0;

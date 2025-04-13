@@ -62,9 +62,6 @@ void Gui::Loop(const std::function<void() >& func)
 				isRunning = true;
 		}
 
-		std::printf("MSG: %d\n", isRunning);
-		std::cout << msg.message << "\n";
-
 		if (isRunning)
 			break;
 
