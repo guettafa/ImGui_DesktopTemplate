@@ -12,6 +12,22 @@ void Gui::Menu()
 	ImGui::DockSpaceOverViewport(1, viewport, 0, 0);
 #endif
 
+	// Menu Bar
+	if (ImGui::BeginMainMenuBar())
+	{
+		if (ImGui::BeginMenu("View"))
+		{
+			if (ImGui::MenuItem("Graph")		    ) {}
+			if (ImGui::MenuItem("Trainer")		    ) {}
+			if (ImGui::MenuItem("Logger")		    ) {}
+			if (ImGui::MenuItem("Profile Selector") ) {}
+
+			ImGui::EndMenu();
+		}
+		ImGui::EndMainMenuBar();
+	}
+
+	// Views
 	if (ImGui::Begin("Salut", nullptr))
 	{
 		ImGui::Text("%f", ImGui::GetIO().Framerate);

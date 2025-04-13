@@ -30,7 +30,7 @@ public:
 	VOID InitImGui();
 	VOID InitDevice();
 	VOID ResetDevice();
-	VOID Cleanup();
+	VOID Destroy();
 
 	Window() {};
 	Window(UINT aWidth, UINT aHeight)
@@ -45,7 +45,7 @@ public:
 
 	~Window()
 	{
-		Cleanup();
+		Destroy();
 	}
 
 private:

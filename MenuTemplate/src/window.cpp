@@ -15,10 +15,8 @@ LRESULT WINAPI Window::WndProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam
 	case WM_SIZE: // when resized
 		if (wparam == SIZE_MINIMIZED)
 			return 0;
-		g_width =  (UINT)LOWORD(lparam);
+		g_width  = (UINT)LOWORD(lparam);
 		g_height = (UINT)HIWORD(lparam);
-		return 0;
-	case WM_QUIT: // clean and close
 		return 0;
 	}
 	return ::DefWindowProc(hWnd, msg, wparam, lparam);
@@ -126,7 +124,7 @@ VOID Window::InitImGui()
 	}
 }
 
-VOID Window::Cleanup()
+VOID Window::Destroy()
 {
 	if (pD3d9Device)
 		pD3d9Device->Release(); pD3d9Device = nullptr;
