@@ -159,7 +159,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\gui.h" />
-    <ClInclude Include="include\menu.h" />
     <ClInclude Include="include\window.h" />
     <ClInclude Include="lib\imgui\backends\imgui_impl_dx9.h" />
     <ClInclude Include="lib\imgui\backends\imgui_impl_win32.h" />

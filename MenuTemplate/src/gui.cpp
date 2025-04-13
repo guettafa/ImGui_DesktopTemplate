@@ -7,9 +7,20 @@ namespace Gui
 
 void Gui::Menu()
 {
-	ImGui::Begin("Salut", nullptr);
+#ifdef IMGUI_HAS_VIEWPORT
+	const ImGuiViewport* viewport = ImGui::GetMainViewport();
+	ImGui::DockSpaceOverViewport(1, viewport, 0, 0);
+#endif
+
+	if (ImGui::Begin("Salut", nullptr))
 	{
-		ImGui::Text("%f",ImGui::GetIO().Framerate);
+		ImGui::Text("%f", ImGui::GetIO().Framerate);
+		ImGui::Text("Hello ImGui !");
+	}
+	ImGui::End();
+
+	if (ImGui::Begin("Hi Guys", nullptr))
+	{
 		ImGui::Text("Hello ImGui !");
 	}
 	ImGui::End();
@@ -68,6 +79,6 @@ void Gui::Loop(const std::function<void() >& func)
 			wnd.pD3d9Device->EndScene();
 		}
 
-		HRESULT result = wnd.pD3d9Device->Present(nullptr, nullptr, nullptr, nullptr);
+		wnd.pD3d9Device->Present(nullptr, nullptr, nullptr, nullptr);
 	}
 }

@@ -52,5 +52,4 @@ private:
 	static LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam);
 };
 
-
 #endif

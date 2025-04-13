@@ -112,6 +112,7 @@ VOID Window::InitImGui()
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
 	if (!ImGui_ImplWin32_Init(hWnd)) 
 	{
