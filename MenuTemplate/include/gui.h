@@ -8,7 +8,7 @@ namespace Gui
 {
 	extern Window wnd;
 
-	void Menu();
+	void Display();
 	void Loop(const std::function<void()>& func);
 }
 
