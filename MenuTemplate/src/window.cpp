@@ -18,6 +18,9 @@ LRESULT WINAPI Window::WndProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam
 		g_width  = (UINT)LOWORD(lparam);
 		g_height = (UINT)HIWORD(lparam);
 		return 0;
+	case WM_DESTROY:
+		::PostQuitMessage(0);
+		return 0;
 	}
 	return ::DefWindowProc(hWnd, msg, wparam, lparam);
 }
@@ -41,7 +44,7 @@ VOID Window::CreateWnd()
 	if (!::RegisterClassEx(&wndClass))
 		std::printf("[-] Can't register WndClass %d", GetLastError());
 
-	hWnd = ::CreateWindowW(wndClass.lpszClassName, nullptr, WS_OVERLAPPEDWINDOW, 0, 0, g_width, g_height, nullptr, nullptr, wndClass.hInstance, nullptr);
+	hWnd = ::CreateWindow(wndClass.lpszClassName, nullptr, WS_OVERLAPPEDWINDOW, 0, 0, g_width, g_height, nullptr, nullptr, wndClass.hInstance, nullptr);
 	
 	if (!hWnd)
 	{
@@ -57,7 +60,7 @@ VOID Window::CreateWnd()
 
 VOID Window::InitDevice()
 {
-	pD3d9 = Direct3DCreate9(D3D_SDK_VERSION);
+	pD3d9 = ::Direct3DCreate9(D3D_SDK_VERSION);
 
 	if (!pD3d9) 
 	{

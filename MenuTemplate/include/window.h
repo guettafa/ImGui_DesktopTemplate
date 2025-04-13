@@ -21,9 +21,9 @@ extern UINT g_width, g_height;
 class Window
 {
 public:
-	HWND hWnd;
-	LPDIRECT3D9 pD3d9;
-	LPDIRECT3DDEVICE9 pD3d9Device;
+	HWND hWnd = nullptr;
+	LPDIRECT3D9 pD3d9 = nullptr;
+	LPDIRECT3DDEVICE9 pD3d9Device = nullptr;
 	D3DPRESENT_PARAMETERS d3dParameters{};
 
 	VOID CreateWnd();

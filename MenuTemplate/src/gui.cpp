@@ -1,11 +1,12 @@
 #include "gui.h"
+#include <iostream>
 
 namespace Gui
 {
 	Window wnd;
 }
 
-void Gui::Menu()
+void Gui::Display()
 {
 #ifdef IMGUI_HAS_VIEWPORT
 	const ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -44,24 +45,28 @@ void Gui::Menu()
 
 void Gui::Loop(const std::function<void() >& func) 
 {
-	MSG msg{};
-	bool isDone = false;
+	bool isRunning = false;
 	int clearColor[4] = {0, 0, 0, 0};
 
-	while (!isDone)
+	while (!isRunning)
 	{
+		MSG msg{};
+
 		// Polls event
-		if (PeekMessage(&msg, wnd.hWnd, 0, 0, PM_REMOVE))
+		while (::PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 		{
-			TranslateMessage(&msg);
-			DispatchMessageA(&msg);
+			::TranslateMessage(&msg);
+			::DispatchMessageA(&msg);
 
 			if (msg.message == WM_QUIT)
-				isDone = true;
-
-			if (isDone)
-				break;
+				isRunning = true;
 		}
+
+		std::printf("MSG: %d\n", isRunning);
+		std::cout << msg.message << "\n";
+
+		if (isRunning)
+			break;
 
 		// Resize Window
 		if (g_width != 0 && g_height != 0)
@@ -97,4 +102,10 @@ void Gui::Loop(const std::function<void() >& func)
 
 		wnd.pD3d9Device->Present(nullptr, nullptr, nullptr, nullptr);
 	}
+	// Cleaning up
+	ImGui_ImplDX9_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
+
+	::DestroyWindow(wnd.hWnd);
 }
