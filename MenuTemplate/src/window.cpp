@@ -2,7 +2,8 @@
 #include "window.h"
 
 #pragma region Globals
-UINT g_width = 1920, g_height = 1080;
+UINT* g_pWidth;
+UINT* g_pHeight;
 #pragma endregion
 
 LRESULT WINAPI Window::WndProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
@@ -15,8 +16,8 @@ LRESULT WINAPI Window::WndProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam
 	case WM_SIZE: // when resized
 		if (wparam == SIZE_MINIMIZED)
 			return 0;
-		g_width  = (UINT)LOWORD(lparam);
-		g_height = (UINT)HIWORD(lparam);
+		*g_pWidth  = (UINT)LOWORD(lparam);
+		*g_pHeight = (UINT)HIWORD(lparam);
 		return 0;
 	case WM_DESTROY:
 		::PostQuitMessage(0);
@@ -41,10 +42,13 @@ VOID Window::CreateWnd()
 	wndClass.lpszClassName	= L"MyWindow";
 	wndClass.hIconSm		= nullptr;
 
+	g_pWidth  = &m_initWidth;
+	g_pHeight = &m_initHeight;
+
 	if (!::RegisterClassEx(&wndClass))
 		std::printf("[-] Can't register WndClass %d", GetLastError());
 
-	hWnd = ::CreateWindow(wndClass.lpszClassName, nullptr, WS_OVERLAPPEDWINDOW, 0, 0, g_width, g_height, nullptr, nullptr, wndClass.hInstance, nullptr);
+	hWnd = ::CreateWindow(wndClass.lpszClassName, nullptr, WS_OVERLAPPEDWINDOW, 0, 0, *g_pWidth, *g_pHeight, nullptr, nullptr, wndClass.hInstance, nullptr);
 	
 	if (!hWnd)
 	{
