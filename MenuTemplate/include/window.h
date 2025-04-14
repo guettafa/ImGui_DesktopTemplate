@@ -15,7 +15,8 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 	WndProc is a private member of the Window Class.
 */
 #pragma region Globals
-extern UINT g_width, g_height;
+extern UINT* g_pWidth;
+extern UINT* g_pHeight;
 #pragma endregion
 
 class Window
@@ -34,13 +35,11 @@ public:
 
 	Window() {};
 	Window(UINT aWidth, UINT aHeight)
+		: m_initWidth(aWidth), m_initHeight(aHeight)
 	{
 		CreateWnd();
 		InitDevice();
 		InitImGui();
-
-		g_width = aWidth;
-		g_height = aHeight;
 	}
 
 	~Window()
@@ -49,6 +48,9 @@ public:
 	}
 
 private:
+	UINT m_initWidth;
+	UINT m_initHeight;
+
 	static LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam);
 };
 
