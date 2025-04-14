@@ -66,7 +66,7 @@ void Gui::Loop(const std::function<void() >& func)
 			break;
 
 		// Resize Window
-		if (g_pWidth != 0 && g_pHeight != 0)
+		if (*g_pWidth != 0 && *g_pHeight != 0)
 		{
 			wnd.d3dParameters.BackBufferWidth  = *g_pWidth;
 			wnd.d3dParameters.BackBufferHeight = *g_pHeight;
