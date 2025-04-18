@@ -6,6 +6,7 @@
 #include "imgui_impl_win32.h"
 #include <d3d9.h>
 #include <windows.h>
+#include <memory>
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -15,8 +16,8 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 	WndProc is a private member of the Window Class.
 */
 #pragma region Globals
-extern UINT* g_pWidth;
-extern UINT* g_pHeight;
+extern std::unique_ptr<UINT> g_pWidth;
+extern std::unique_ptr<UINT> g_pHeight;
 #pragma endregion
 
 class Window
@@ -35,7 +36,7 @@ public:
 
 	Window() {};
 	Window(UINT aWidth, UINT aHeight)
-		: m_initWidth(aWidth), m_initHeight(aHeight)
+		: m_width(aWidth), m_height(aHeight)
 	{
 		CreateWnd();
 		InitDevice();
@@ -48,8 +49,8 @@ public:
 	}
 
 private:
-	UINT m_initWidth;
-	UINT m_initHeight;
+	UINT m_width;
+	UINT m_height;
 
 	static LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam);
 };

@@ -2,8 +2,9 @@
 #include "window.h"
 
 #pragma region Globals
-UINT* g_pWidth;
-UINT* g_pHeight;
+
+std::unique_ptr<UINT> g_pWidth(nullptr);
+std::unique_ptr<UINT> g_pHeight(nullptr);
 #pragma endregion
 
 LRESULT WINAPI Window::WndProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
@@ -16,8 +17,8 @@ LRESULT WINAPI Window::WndProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam
 	case WM_SIZE: // when resized
 		if (wparam == SIZE_MINIMIZED)
 			return 0;
-		*g_pWidth  = (UINT)LOWORD(lparam);
-		*g_pHeight = (UINT)HIWORD(lparam);
+		*g_pWidth.get() = (UINT)LOWORD(lparam);
+		*g_pHeight.get() = (UINT)HIWORD(lparam);
 		return 0;
 	case WM_DESTROY:
 		::PostQuitMessage(0);
@@ -42,8 +43,8 @@ VOID Window::CreateWnd()
 	wndClass.lpszClassName	= L"MyWindow";
 	wndClass.hIconSm		= nullptr;
 
-	g_pWidth  = &m_initWidth;
-	g_pHeight = &m_initHeight;
+	g_pWidth  = std::make_unique<UINT>(m_width);
+	g_pHeight = std::make_unique<UINT>(m_height);
 
 	if (!::RegisterClassEx(&wndClass))
 		std::printf("[-] Can't register WndClass %d", GetLastError());
@@ -72,7 +73,7 @@ VOID Window::InitDevice()
 		std::terminate();
 	}
 
-	ZeroMemory(&d3dParameters, sizeof(d3dParameters));
+	::ZeroMemory(&d3dParameters, sizeof(d3dParameters));
 	d3dParameters.Windowed = TRUE;
 	d3dParameters.SwapEffect = D3DSWAPEFFECT_DISCARD;
 	d3dParameters.BackBufferFormat = D3DFMT_UNKNOWN;
